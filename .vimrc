@@ -11,12 +11,15 @@ set expandtab
 set autoindent
 set smartindent
 set background=dark
+color brogrammer
 
 "Visual Mappings
-nmap <F2> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
+map <C-f> :NERDTreeFind<CR>
+
 nmap <Esc><Esc> :q!<CR>
 nmap <C-b> :w<CR>
-vmap < <gv 
+vmap < <gv
 vmap > >gv
 
 imap <up> <C-O>gk
