@@ -11,7 +11,6 @@ set expandtab
 set autoindent
 set smartindent
 set background=dark
-color brogrammer
 
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
