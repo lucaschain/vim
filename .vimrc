@@ -11,6 +11,7 @@ set expandtab
 set autoindent
 set smartindent
 set background=dark
+"color brogrammer
 
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
@@ -25,5 +26,10 @@ imap <up> <C-O>gk
 imap <down> <C-O>gj
 imap <C-b> <Esc>:w!<CR>i
 inoremap <C-Space> :w!
+
+noremap <up> <nop>
+noremap <down> <nop>
+noremap <left> <nop>
+noremap <right> <nop>
 
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
