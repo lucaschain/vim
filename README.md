@@ -16,6 +16,8 @@ git clone https://github.com/junegunn/fzf.vim
 git clone https://github.com/airblade/vim-gitgutter.git
 git clone https://github.com/bronson/vim-trailing-whitespace.git
 git clone https://github.com/tpope/vim-fugitive.git
+git clone https://github.com/dustinfarris/vim-htmlbars-inline-syntax.git
+
 ```
 
 ## .bashrc
