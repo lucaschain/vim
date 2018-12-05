@@ -39,3 +39,10 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 
 autocmd BufRead,BufNewFile *.js HighlightInlineHbs
 
+" Clipboard (yank/paste from/to clipboard, if available)
+if has("clipboard")
+  set clipboard=unnamed
+  if has("unnamedplus")
+    set clipboard+=unnamedplus
+  endif
+endif
