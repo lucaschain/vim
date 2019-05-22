@@ -1,3 +1,6 @@
+let g:ale_completion_enabled = 1
+let g:ale_kotlin_languageserver_executable = '/home/lucas.chain/dev/KotlinLanguageServer/server/build/install/server/bin/server'
+
 call pathogen#infect()
 
 set backupdir=/home/lucas.chain/vimtmp
@@ -16,6 +19,7 @@ set background=dark
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
+map gf :ALEGoToDefinition<CR>
 
 nmap <Esc><Esc> :q!<CR>
 nmap <C-b> :w<CR>
