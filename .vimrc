@@ -19,7 +19,10 @@ set background=dark
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
-map gf :ALEGoToDefinition<CR>
+noremap gd :ALEGoToDefinition<CR>
+noremap gD :ALEGoToDefinition<CR>
+noremap F :ALESymbolSearch<space>
+noremap K :ALEHover<CR>
 
 nmap <Esc><Esc> :q!<CR>
 nmap <C-b> :w<CR>
