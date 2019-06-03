@@ -13,6 +13,7 @@ syntax on
 set expandtab
 set autoindent
 set smartindent
+set incsearch
 set background=dark
 "color brogrammer
 
