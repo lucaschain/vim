@@ -20,6 +20,7 @@ git clone https://github.com/tpope/vim-fugitive.git
 git clone https://github.com/dustinfarris/vim-htmlbars-inline-syntax.git
 git clone https://github.com/wellle/targets.vim
 git clone https://github.com/w0rp/ale
+git clone https://github.com/kien/ctrlp.vim
 
 ```
 
