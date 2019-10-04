@@ -21,6 +21,7 @@ git clone https://github.com/dustinfarris/vim-htmlbars-inline-syntax.git
 git clone https://github.com/wellle/targets.vim
 git clone https://github.com/w0rp/ale
 git clone https://github.com/kien/ctrlp.vim
+git clone https://github.com/hashivim/vim-terraform.git
 
 ```
 
@@ -68,6 +69,4 @@ bind-key C-k send-key C-k
 bind-key -n C-k send-prefix
 
 bind-key = setw synchronize-panes
-
-set -g @plugin 'pwittchen/tmux-plugin-spotify'
 ```
