@@ -31,7 +31,6 @@ git clone https://github.com/hashivim/vim-terraform.git
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"
 ```
 ## .tmux.conf
-
 ```
 # Solve clipboard hell
 set-option -g set-clipboard on
@@ -59,14 +58,17 @@ bind l select-pane -R
 
 bind v split-window -h -c "#{pane_current_path}"
 bind s split-window    -c "#{pane_current_path}"
-
-bind c new-window      -c "#{pane_current_path}#{spotify_song}"
+bind c new-window      -c "#{pane_current_path}"
 
 bind C-c choose-session
 bind C-n command-prompt 'new-session -s %%'
 
-bind-key C-k send-key C-k 
+bind-key C-k send-key C-k
 bind-key -n C-k send-prefix
 
 bind-key = setw synchronize-panes
+
+bind-key -T copy-mode-vi 'enter' send-keys -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+
+source "/home/lucas.chain/.local/lib/python2.7/site-packages/powerline/bindings/tmux/powerline.conf"
 ```
