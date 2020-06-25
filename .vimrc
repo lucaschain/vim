@@ -4,6 +4,7 @@ let g:ale_linters = {'go': ['golangserver', 'staticcheck', 'gobuild']}
 let g:ale_fixers = {'go': ['gofmt'], 'terraform': ['terraform']}
 let g:ale_go_langserver_executable = '/home/lucas.chain/go/bin/go-langserver'
 let g:ale_fix_on_save = 1
+let g:terraform_fmt_on_save=1
 
 
 call pathogen#infect()
@@ -63,5 +64,3 @@ endif
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
-
-let g:terraform_fmt_on_save=1
