@@ -1,7 +1,7 @@
 let g:ale_completion_enabled = 1
 let g:ale_kotlin_languageserver_executable = '/home/lucas.chain/dev/KotlinLanguageServer/server/build/install/server/bin/server'
 let g:ale_linters = {'go': ['golangserver', 'staticcheck', 'gobuild']}
-let g:ale_fixers = {'go': ['gofmt']}
+let g:ale_fixers = {'go': ['gofmt'], 'terraform': ['terraform']}
 let g:ale_go_langserver_executable = '/home/lucas.chain/go/bin/go-langserver'
 let g:ale_fix_on_save = 1
 
