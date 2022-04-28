@@ -44,6 +44,8 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+let mapleader=" "
+
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
 else
@@ -120,6 +122,8 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+nmap <leader>f :CocFix<CR>
+
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
@@ -152,6 +156,9 @@ if has("clipboard")
   endif
 endif
 
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
+
+hi Pmenu ctermbg=23 ctermfg=white
+hi Spellbad term=reverse ctermbg=1 guibg=DarkRed
