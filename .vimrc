@@ -155,3 +155,6 @@ highlight CocFloating ctermbg=Black
 
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+hi Pmenu ctermbg=23 ctermfg=white
+hi Spellbad term=reverse ctermbg=1 guibg=DarkRed
