@@ -1,34 +1,31 @@
 let g:ale_completion_enabled = 1
 let g:ale_kotlin_languageserver_executable = '/home/lucas.chain/dev/KotlinLanguageServer/server/build/install/server/bin/server'
 let g:ale_linters = {'go': ['golangserver', 'staticcheck', 'gobuild']}
-let g:ale_fixers = {'go': ['gofmt'], 'terraform': ['terraform']}
+let g:ale_fixers = {
+\  '*': ['remove_trailing_lines', 'trim_whitespace'],
+\  'python': ['flake8'],
+\  'go': ['gofmt']
+\}
 let g:ale_go_langserver_executable = '/home/lucas.chain/go/bin/go-langserver'
 let g:ale_fix_on_save = 1
-let g:terraform_fmt_on_save=1
 
+let mapleader="\<space>"
 
 call pathogen#infect()
 
-set backupdir=/home/chain/vimtmp
-set directory=/home/chain/vimtmp
+set backupdir=/Users/lucaschain/vimtmp
+set directory=/Users/lucaschain/vimtmp
 
 set nu
 set shiftwidth=2
 set tabstop=2
-syntax on
+syntax off
 set expandtab
 set autoindent
 set smartindent
 set incsearch
 set background=dark
-set updatetime=300
-
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=yes
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -43,8 +40,6 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-let mapleader=" "
 
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -122,21 +117,17 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-nmap <leader>f :CocFix<CR>
-
 "Visual Mappings
 map <C-n> :NERDTreeToggle<CR>
 map <C-f> :NERDTreeFind<CR>
 
-nmap <Esc><Esc> :q!<CR>
-nmap <C-b> :w<CR>
+map <C-[> :CtrlPBuffer<CR>
+
 vmap < <gv
 vmap > >gv
 
 imap <up> <C-O>gk
 imap <down> <C-O>gj
-imap <C-b> <Esc>:w!<CR>i
-inoremap <C-Space> :w!
 
 noremap <up> <nop>
 noremap <down> <nop>
@@ -144,6 +135,8 @@ noremap <left> <nop>
 noremap <right> <nop>
 
 noremap <C-t> :Find<CR>
+noremap <C-m> :%GrammarousCheck<CR>
+noremap <C-s> :call CocAction('runCommand', 'python.sortImports')<CR>
 
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
@@ -156,9 +149,7 @@ if has("clipboard")
   endif
 endif
 
-"python3 from powerline.vim import setup as powerline_setup
-"python3 powerline_setup()
-"python3 del powerline_setup
+highlight CocFloating ctermbg=Black
 
-hi Pmenu ctermbg=23 ctermfg=white
-hi Spellbad term=reverse ctermbg=1 guibg=DarkRed
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
