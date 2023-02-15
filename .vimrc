@@ -1,14 +1,3 @@
-let g:ale_completion_enabled = 1
-let g:ale_kotlin_languageserver_executable = '/home/lucas.chain/dev/KotlinLanguageServer/server/build/install/server/bin/server'
-let g:ale_linters = {'go': ['golangserver', 'staticcheck', 'gobuild']}
-let g:ale_fixers = {
-\  '*': ['remove_trailing_lines', 'trim_whitespace'],
-\  'python': ['flake8'],
-\  'go': ['gofmt']
-\}
-let g:ale_go_langserver_executable = '/home/lucas.chain/go/bin/go-langserver'
-let g:ale_fix_on_save = 1
-
 let mapleader="\<space>"
 
 call pathogen#infect()
