@@ -1,34 +1,40 @@
-let mapleader="\<space>"
-
 call pathogen#infect()
 
-set backupdir=/Users/lucaschain/vimtmp
-set directory=/Users/lucaschain/vimtmp
+set backupdir=/home/chain/vimtmp
+set directory=/home/chain/vimtmp
 
 set nu
 set shiftwidth=2
 set tabstop=2
-syntax off
+set ruler
+syntax on
 set expandtab
 set autoindent
 set smartindent
 set incsearch
 set background=dark
+set updatetime=300
 set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
+
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
+" remap for complete to use tab and <cr>
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+		\ coc#pum#visible() ? coc#pum#next(1):
+		\ <SID>check_back_space() ? "\<Tab>" :
+		\ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let mapleader=" "
 
 if has('nvim')
   inoremap <silent><expr> <c-space> coc#refresh()
@@ -78,16 +84,6 @@ augroup end
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" Remap <C-f> and <C-b> for scroll float windows/popups.
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -125,9 +121,8 @@ noremap <down> <nop>
 noremap <left> <nop>
 noremap <right> <nop>
 
+
 noremap <C-t> :Find<CR>
-noremap <C-m> :%GrammarousCheck<CR>
-noremap <C-s> :call CocAction('runCommand', 'python.sortImports')<CR>
 
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
@@ -140,10 +135,34 @@ if has("clipboard")
   endif
 endif
 
-highlight CocFloating ctermbg=Black
-
-autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+"python3 from powerline.vim import setup as powerline_setup
+"python3 powerline_setup()
+"python3 del powerline_setup
 
 hi Pmenu ctermbg=23 ctermfg=white
 hi Spellbad term=reverse ctermbg=1 guibg=DarkRed
+
+if &term =~ '^screen'
+  " Page keys https://github.com/tmux/tmux/wiki/FAQ
+  execute "set t_kP=\e[5;*~"
+  execute "set t_kN=\e[6;*~"
+
+  " Arrow keys http://unix.stackexchange.com/a/34723
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
+
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
+
+aug python
+  " ftype/python.vim overwrites this
+  au FileType python setlocal ts=4 sts=4 sw=4
+aug end
+let g:csv_highlight_column = 'y'
