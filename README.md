@@ -24,6 +24,7 @@ git clone https://github.com/kien/ctrlp.vim
 git clone https://github.com/neoclide/coc.nvim
 git clone https://github.com/neovim/nvim-lspconfig
 git clone https://github.com/chrisbra/csv.vim
+git clone https://github.com/sheerun/vim-polyglot
 
 ```
 
