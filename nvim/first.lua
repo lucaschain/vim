@@ -12,9 +12,11 @@ lspconfig.pyright.setup(coq.lsp_ensure_capabilities({}))
 lspconfig.pylsp.setup {
 	filetypes = {"python"},
 	settings = {
+		configurationSources = {"flake8"},
 		formatCommand = {"black"}
 	}
 }
+vim.diagnostic.config({virtual_text = false})
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -38,6 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
     vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<space>d', vim.diagnostic.open_float, opts)
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<space>f', function()
