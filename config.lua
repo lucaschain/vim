@@ -4,6 +4,7 @@ lvim.plugins = {
   { "ray-x/aurora" },
   { "svermeulen/text-to-colorscheme.nvim" },
   { "Decodetalkers/csharpls-extended-lsp.nvim" },
+  { "klen/nvim-test" },
 }
 
 require('text-to-colorscheme').setup {
@@ -50,3 +51,19 @@ local config = {
   cmd = { "csharp-ls" },
 }
 require("lvim.lsp.manager").setup("csharp_ls", config)
+
+require('nvim-test').setup({
+  termOpts = {
+    direction = "float"
+  }
+})
+
+lvim.builtin.which_key.mappings["t"] = {
+  name = "Test",
+  s = { "<cmd>TestSuite<cr>", "Run suite" },
+  f = { "<cmd>TestFile<cr>", "Run file" },
+  n = { "<cmd>TestNearest<cr><cr>", "Run nearest to cursor" },
+  l = { "<cmd>TestLast<cr>", "Rerun last tast" },
+  v = { "<cmd>TestVisit<cr>", "Open last test in a buffer" },
+  i = { "<cmd>TestInfo<cr>", "Show information on test plugin" },
+}
