@@ -1,9 +1,10 @@
 lvconf() {
-  lvim $HOME/.config/lvim/config.lua
+  cd $HOME/.config/lvim && lvim config.lua
 }
 
 aconf() {
   lvim $HOME/.bash_aliases
+  source $HOME/.bash_aliases
 }
 
 vim () {
