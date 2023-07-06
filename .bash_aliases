@@ -16,6 +16,7 @@ vim () {
 
 save-conf() {
   cp ~/.config/lvim/config.lua ~/dev/vim
+  cp -R ~/.config/lvim/lua/* ~/dev/vim/lua
   cp ~/.bash_aliases ~/dev/vim
   cp ~/.tmux.conf ~/dev/vim
 }
