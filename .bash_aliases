@@ -6,8 +6,10 @@ save-conf() {
 }
 
 lvconf() {
+  current_dir=$(pwd)
   cd $HOME/.config/lvim && lvim config.lua
   save-conf
+  cd $current_dir
 }
 
 aconf() {

@@ -1,6 +1,7 @@
 require('nvim-test').setup({
   termOpts = {
-    direction = "float"
+    direction = "horizontal",
+    height = 10
   }
 })
 
@@ -13,3 +14,6 @@ lvim.builtin.which_key.mappings["t"] = {
   v = { "<cmd>TestVisit<cr>", "Open last test in a buffer" },
   i = { "<cmd>TestInfo<cr>", "Show information on test plugin" },
 }
+
+lvim.keys.normal_mode["<C-t>"] = "<cmd>TestNearest<cr><cr>"
+lvim.keys.normal_mode["<C-j>"] = ":bd<cr><cr>"
