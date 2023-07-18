@@ -37,7 +37,13 @@ lvim.plugins = {
         "Toggle Flash Search"
       },
     },
-  }
+  },
+  {
+    "mfussenegger/nvim-dap",
+  },
+  {
+    "mfussenegger/nvim-dap-python"
+  },
 }
 
 vim.diagnostic.config({ virtual_text = false })
