@@ -5,6 +5,12 @@ require('nvim-test').setup({
   }
 })
 
+require('nvim-test.runners.jest'):setup {
+  command = "./node_modules/.bin/jest",
+  args = { "--collectCoverage=false", "" },
+}
+
+
 lvim.builtin.which_key.mappings["t"] = {
   name = "Test",
   s = { "<cmd>TestSuite<cr>", "Run suite" },

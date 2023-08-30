@@ -4,11 +4,15 @@ lvim.plugins = {
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      require("copilot").setup({})
+      require("copilot").setup({
+        suggestion = {
+          auto_trigger = true
+        }
+      })
     end,
   },
   { "ray-x/aurora" },
-  { "Decodetalkers/csharpls-extended-lsp.nvim" },
+  { "Hoffs/omnisharp-extended-lsp.nvim" },
   { "klen/nvim-test" },
   {
     "casonadams/simple-diagnostics.nvim",

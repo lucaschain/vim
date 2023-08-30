@@ -6,7 +6,7 @@ formatters.setup {
 
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { name = "mypy" },
+  { name = "mypy", args = { "--python-executable=python" } },
 }
 
 lvim.format_on_save = true

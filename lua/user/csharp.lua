@@ -1,9 +1,8 @@
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "csharp_ls" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "csharp_ls", "omnisharp" })
 
 local config = {
   handlers = {
-    ["textDocument/definition"] = require('csharpls_extended').handler,
+    ["textDocument/definition"] = require('omnisharp_extended').handler,
   },
-  cmd = { "csharp-ls" },
 }
-require("lvim.lsp.manager").setup("csharp_ls", config)
+require("lvim.lsp.manager").setup("omnisharp", config)
