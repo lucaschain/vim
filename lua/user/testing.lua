@@ -1,25 +1,23 @@
-require('nvim-test').setup({
-  termOpts = {
-    direction = "horizontal",
-    height = 10
+require("neotest").setup({
+  output = {
+    open_on_run = true,
+  },
+  adapters = {
+    require("neotest-dotnet")({
+      discovery_root = "project"
+    })
   }
 })
 
-require('nvim-test.runners.jest'):setup {
-  command = "./node_modules/.bin/jest",
-  args = { "--collectCoverage=false", "" },
-}
-
-
 lvim.builtin.which_key.mappings["t"] = {
   name = "Test",
-  s = { "<cmd>TestSuite<cr>", "Run suite" },
-  f = { "<cmd>TestFile<cr>", "Run file" },
-  n = { "<cmd>TestNearest<cr><cr>", "Run nearest to cursor" },
-  l = { "<cmd>TestLast<cr>", "Rerun last tast" },
-  v = { "<cmd>TestVisit<cr>", "Open last test in a buffer" },
-  i = { "<cmd>TestInfo<cr>", "Show information on test plugin" },
+  f = { "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", "Run file" },
+  n = { "<cmd>lua require('neotest').run.run() <cr>", "Run nearest to cursor" },
+  a = { "<cmd>lua require('neotest').run.attach()<cr>", "Attach to nearest test" },
+  s = { "<cmd>lua require('neotest').run.stop()<cr>", "Stop nearest test" },
 }
 
-lvim.keys.normal_mode["<C-t>"] = "<cmd>TestNearest<cr><cr>"
-lvim.keys.normal_mode["<C-j>"] = ":bd<cr><cr>"
+
+
+lvim.keys.normal_mode["<C-t>"] = "<cmd>lua require('neotest').run.run();require('neotest').run.attach();<cr>"
+lvim.keys.normal_mode["<C-j>"] = "<cmd>lua require('neotest').output_panel.toggle()<cr>"

@@ -13,7 +13,6 @@ lvim.plugins = {
   },
   { "ray-x/aurora" },
   { "Hoffs/omnisharp-extended-lsp.nvim" },
-  { "klen/nvim-test" },
   {
     "casonadams/simple-diagnostics.nvim",
     config = function()
@@ -48,6 +47,11 @@ lvim.plugins = {
   {
     "mfussenegger/nvim-dap-python"
   },
+  { "Issafalcon/neotest-dotnet" },
+  "nvim-neotest/neotest",
+  requires = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+    "antoinemadec/FixCursorHold.nvim",
+  },
 }
-
-vim.diagnostic.config({ virtual_text = false })
