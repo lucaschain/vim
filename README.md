@@ -6,8 +6,6 @@ My vim config files
 ## Requirements
 
 - https://github.com/junegunn/fzf
-- https://github.com/fwcd/KotlinLanguageServer
-- https://github.com/razzmatazz/csharp-language-server
 
 ## Installing plugins
 
