@@ -4,8 +4,10 @@ require("neotest").setup({
   },
   adapters = {
     require("neotest-dotnet")({
-      discovery_root = "project"
-    })
+      discovery_root = "solution"
+    }),
+    require("neotest-jest")({}),
+    require("neotest-python")({})
   }
 })
 
