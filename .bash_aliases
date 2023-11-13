@@ -7,7 +7,7 @@ save-conf() {
 
 load-conf() {
   cp $HOME/dev/vim/config.lua ~/.config/lvim/config.lua
-  cp -R $HOME/dev/vim/lua $HOME/.config/lvim/lua/*
+  cp -R $HOME/dev/vim/lua $HOME/.config/lvim/lua/
   cp $HOME/dev/vim/.tmux.conf $HOME/.tmux.conf
 }
 
