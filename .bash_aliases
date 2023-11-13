@@ -5,6 +5,12 @@ save-conf() {
   cp ~/.tmux.conf ~/dev/vim
 }
 
+load-conf() {
+  cp $HOME/dev/vim/config.lua ~/.config/lvim/config.lua
+  cp -R $HOME/dev/vim/lua $HOME/.config/lvim/lua/*
+  cp $HOME/dev/vim/.tmux.conf $HOME/.tmux.conf
+}
+
 lvconf() {
   current_dir=$(pwd)
   cd $HOME/.config/lvim && lvim config.lua
