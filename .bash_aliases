@@ -44,3 +44,11 @@ tfa () {
   export MONGODB_ATLAS_PRIVATE_KEY=$(gin param get atlantis production ATLASMONGODB_API_PRIVATE_KEY)
   terraform $@
 }
+
+dev () {
+  cd $HOME/dev
+}
+
+origin () {
+  cd $HOME/dev/OriginFinancial
+}
