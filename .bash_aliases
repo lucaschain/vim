@@ -24,6 +24,12 @@ aconf() {
   save-conf
 }
 
+rconf() {
+  lvim $HOME/.bashrc
+  source $HOME/.bashrc
+  save-conf
+}
+
 vim () {
   if [ -f "pyproject.toml" ]; then
     poetry run lvim "$@"
@@ -50,5 +56,26 @@ dev () {
 }
 
 origin () {
-  cd $HOME/dev/OriginFinancial
+  cd $HOME/dev/OriginFinancial/$@
+}
+
+complete -W "$(ls $HOME/dev/OriginFinancial)" origin
+
+dependabot/pip/pytest-asyncio-0.21.1
+
+kx () {
+  kubectl ctx $@
+}
+
+kns () {
+  kubectl ns $@
+}
+
+vpn() {
+  # sudo ifconfig eth0 mtu 1392 up
+  sudo openvpn --config ~/dev/vpn/lucaschain-$1-vpn-config.ovpn
+}
+
+drain() {
+  kubectl drain $1 --ignore-daemonsets --delete-emptydir-data
 }
