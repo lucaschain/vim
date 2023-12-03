@@ -7,7 +7,8 @@ require("neotest").setup({
       discovery_root = "solution"
     }),
     require("neotest-jest")({}),
-    require("neotest-python")({})
+    require("neotest-python")({}),
+    require("neotest-go")({})
   }
 })
 

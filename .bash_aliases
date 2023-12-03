@@ -52,22 +52,20 @@ tfa () {
 }
 
 dev () {
-  cd $HOME/dev
+  cd $HOME/dev/$@
 }
+complete -W "$(ls $HOME/dev)" dev
 
 origin () {
   cd $HOME/dev/OriginFinancial/$@
 }
-
 complete -W "$(ls $HOME/dev/OriginFinancial)" origin
-
-dependabot/pip/pytest-asyncio-0.21.1
 
 kx () {
   kubectl ctx $@
 }
 
-kns () {
+kn () {
   kubectl ns $@
 }
 

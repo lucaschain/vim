@@ -43,9 +43,15 @@ lvim.plugins = {
   },
   {
     "mfussenegger/nvim-dap",
+    dependencies = {
+      "leoluz/nvim-dap-go",
+    },
   },
   {
-    "mfussenegger/nvim-dap-python"
+    "mfussenegger/nvim-dap-python",
+    config = function()
+      require("dap-go").setup()
+    end,
   },
   {
     "nvim-neotest/neotest",
@@ -56,6 +62,7 @@ lvim.plugins = {
       "Issafalcon/neotest-dotnet",
       "haydenmeade/neotest-jest",
       "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-go",
     },
   }
 }
