@@ -56,22 +56,12 @@ dev () {
 }
 complete -W "$(ls $HOME/dev)" dev
 
-origin () {
-  cd $HOME/dev/OriginFinancial/$@
-}
-complete -W "$(ls $HOME/dev/OriginFinancial)" origin
-
 kx () {
   kubectl ctx $@
 }
 
 kn () {
   kubectl ns $@
-}
-
-vpn() {
-  # sudo ifconfig eth0 mtu 1392 up
-  sudo openvpn --config ~/dev/vpn/lucaschain-$1-vpn-config.ovpn
 }
 
 drain() {
