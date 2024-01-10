@@ -67,3 +67,21 @@ kn () {
 drain() {
   kubectl drain $1 --ignore-daemonsets --delete-emptydir-data
 }
+
+# Andela
+
+aproddb() {
+  cloud-sql-proxy --address 0.0.0.0 --port 1234 tech-myandela-v2-prod:us-central1:prod-integrations-postgres
+}
+
+adevdb() {
+  cloud-sql-proxy --address 0.0.0.0 --port 1235 andela-neo-sandbox:us-central1:pod-sigma-pg-sql
+}
+
+ajobsprod() {
+  cloud-sql-proxy --address 0.0.0.0 --port 1234 tech-myandela-v2-prod:us-central1:prod-matchers-job-postgres
+}
+
+amwdev() {
+  cloud-sql-proxy --address 0.0.0.0 --port 5432 andela-neo-sandbox:us-central1:pod-neo-pg-sql
+}
