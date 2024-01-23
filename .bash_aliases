@@ -68,5 +68,9 @@ drain() {
   kubectl drain $1 --ignore-daemonsets --delete-emptydir-data
 }
 
+bwlogin() {
+  export BW_SESSION=$(bw unlock --raw)
+}
+
 # Andela
-source .andela_aliases
+source $HOME/.andela_aliases
