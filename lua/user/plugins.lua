@@ -45,6 +45,7 @@ lvim.plugins = {
     "mfussenegger/nvim-dap",
     dependencies = {
       "leoluz/nvim-dap-go",
+      "mxsdev/nvim-dap-vscode-js",
     },
   },
   {
@@ -56,6 +57,7 @@ lvim.plugins = {
   {
     "nvim-neotest/neotest",
     dependencies = {
+      "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
@@ -64,5 +66,32 @@ lvim.plugins = {
       "nvim-neotest/neotest-python",
       "nvim-neotest/neotest-go",
     },
-  }
+  },
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod',                     lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+    },
+    cmd = {
+      'DBUI',
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
+    init = function()
+      -- Your DBUI configuration
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
+  {
+    "diepm/vim-rest-console",
+  },
+  { "chrisbra/csv.vim" },
+  {
+    "microsoft/vscode-js-debug",
+    lazy = true,
+    build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
+  },
+  { 'taybart/b64.nvim' }
 }

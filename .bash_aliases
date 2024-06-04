@@ -72,5 +72,58 @@ bwlogin() {
   export BW_SESSION=$(bw unlock --raw)
 }
 
+localdb() {
+  db_name=$1;
+  clionly=${2:-false};
+  db_url="postgres://postgres:postgres@localhost:5432/$db_name";
+
+  if [ $clionly = true ]; then
+    pgcli $db_url
+  else
+    DBUI_URL=$db_url vim "+:DBUI"
+  fi;
+}
+
+
+protect() {
+  filename=$1
+
+  if [ -z "$filename" ]; then
+    echo "Usage: protect <filename>"
+    return 1
+  fi
+
+  gpg -c $filename
+  mv $filename.gpg $filename
+}
+
+unprotect() {
+  filename=$1
+
+  if [ -z "$filename" ]; then
+    echo "Usage: unprotect <filename>"
+    return 1
+  fi
+
+  gpg -d $filename > $filename.gpg
+  mv $filename.gpg $filename
+}
+
+pokedex() {
+  /mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe https://bulbapedia.bulbagarden.net/wiki/$1\#Evolution_data
+}
+
+b64d() {
+  echo $1 | base64 -d
+}
+
+b64e() {
+  echo -n $1 | base64
+}
+
+source <(kubectl completion bash)
+alias k=kubectl
+complete -o default -F __start_kubectl k
+
 # Andela
-source $HOME/.andela_aliases
+source $HOME/.xylo_aliases.sh

@@ -1,5 +1,5 @@
 require("user.plugins")
-require("user.csharp")
+--require("user.csharp")
 require("user.code_cleaning")
 require("user.testing")
 require("user.debugging")
@@ -17,3 +17,18 @@ lvim.builtin.alpha.dashboard.section.header.val = {
   "                                                                             ",
   "                                                                             ",
 }
+
+vim.opt.relativenumber = true
+vim.opt.mouse = ""
+vim.opt.clipboard = "unnamedplus"
+
+local clipboard = vim.g.clipboard
+
+if clipboard ~= nil then
+  vim.g.clipboard = {
+    copy = {
+      ['+'] = 'clip.exe',
+      ['*'] = 'clip.exe',
+    },
+  }
+end
