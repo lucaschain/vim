@@ -93,5 +93,19 @@ lvim.plugins = {
     lazy = true,
     build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out"
   },
-  { 'taybart/b64.nvim' }
+  {
+    "LunarVim/bigfile.nvim",
+    config = function()
+      require("bigfile").setup({
+        pattern = function(bufnr, filesize_mib)
+          local file_contents = vim.fn.readfile(vim.api.nvim_buf_get_name(bufnr))
+          local file_length = #file_contents
+          if file_length > 5000 then
+            return true
+          end
+        end
+      })
+    end,
+  }
+  -- { 'taybart/b64.nvim' }
 }

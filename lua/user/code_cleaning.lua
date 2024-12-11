@@ -1,7 +1,7 @@
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
+  { exe = "isort", filetypes = { "python" } },
   { exe = "black", filetypes = { "python" } },
-  { exe = "isort", filetypes = { "python" } }
 }
 
 local linters = require "lvim.lsp.null-ls.linters"

@@ -125,5 +125,16 @@ source <(kubectl completion bash)
 alias k=kubectl
 complete -o default -F __start_kubectl k
 
-# Andela
+# Xylo
 source $HOME/.xylo_aliases.sh
+
+
+alias tg=terragrunt
+
+netshoot() {
+  k run -it --rm --restart=Never --image nicolaka/netshoot -- bash
+}
+
+jw() {
+  jwt decode --date=local $1
+}

@@ -7,8 +7,8 @@ lvim.builtin.which_key.mappings["d"]["T"] = {
 }
 
 
-lvim.lsp.buffer_mappings.visual_mode['<C-d>'] = { 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', "Decode base64" }
-lvim.lsp.buffer_mappings.visual_mode['<C-e>'] = { 'c<c-r>=system(\'base64\', @")<cr><esc>', "Encode base64" }
+-- lvim.lsp.buffer_mappings.visual_mode['<C-d>'] = { 'c<c-r>=system(\'base64 --decode\', @")<cr><esc>', "Decode base64" }
+-- lvim.lsp.buffer_mappings.visual_mode['<C-e>'] = { 'c<c-r>=system(\'base64\', @")<cr><esc>', "Encode base64" }
 
 -- Diagnostic View
 --

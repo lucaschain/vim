@@ -32,3 +32,5 @@ if clipboard ~= nil then
     },
   }
 end
+
+lvim.transparent_window = true
