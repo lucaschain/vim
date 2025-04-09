@@ -19,48 +19,47 @@ lvconf() {
 }
 
 aconf() {
-  lvim $HOME/.bash_aliases
+  nvim $HOME/.bash_aliases
   source $HOME/.bash_aliases
   save-conf
 }
 
 rconf() {
-  lvim $HOME/.bashrc
+  nvim $HOME/.bashrc
   source $HOME/.bashrc
   save-conf
 }
 
-vim () {
+vim() {
   if [ -f "pyproject.toml" ]; then
-    poetry run lvim "$@"
+    poetry run nvim "$@"
   else
-    lvim "$@"
+    nvim "$@"
   fi
 }
 
-tfa () {
+tfa() {
   # do not run if AWS_VAULT is not set
   if [ -z "$AWS_VAULT" ]; then
     echo "Gin login first"
     return 1
   fi
 
-
   export MONGODB_ATLAS_PUBLIC_KEY=$(gin param get atlantis production ATLASMONGODB_API_PUBLIC_KEY)
   export MONGODB_ATLAS_PRIVATE_KEY=$(gin param get atlantis production ATLASMONGODB_API_PRIVATE_KEY)
   terraform $@
 }
 
-dev () {
+dev() {
   cd $HOME/dev/$@
 }
 complete -W "$(ls $HOME/dev)" dev
 
-kx () {
+kx() {
   kubectl ctx $@
 }
 
-kn () {
+kn() {
   kubectl ns $@
 }
 
@@ -73,17 +72,16 @@ bwlogin() {
 }
 
 localdb() {
-  db_name=$1;
-  clionly=${2:-false};
-  db_url="postgres://postgres:postgres@localhost:5432/$db_name";
+  db_name=$1
+  clionly=${2:-false}
+  db_url="postgres://postgres:postgres@localhost:5432/$db_name"
 
   if [ $clionly = true ]; then
     pgcli $db_url
   else
     DBUI_URL=$db_url vim "+:DBUI"
-  fi;
+  fi
 }
-
 
 protect() {
   filename=$1
@@ -105,12 +103,12 @@ unprotect() {
     return 1
   fi
 
-  gpg -d $filename > $filename.gpg
+  gpg -d $filename >$filename.gpg
   mv $filename.gpg $filename
 }
 
 pokedex() {
-  /mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe https://bulbapedia.bulbagarden.net/wiki/$1\#Evolution_data
+  firefox https://bulbapedia.bulbagarden.net/wiki/$1\#Evolution_data
 }
 
 b64d() {
@@ -125,10 +123,6 @@ source <(kubectl completion bash)
 alias k=kubectl
 complete -o default -F __start_kubectl k
 
-# Xylo
-source $HOME/.xylo_aliases.sh
-
-
 alias tg=terragrunt
 
 netshoot() {
@@ -137,4 +131,18 @@ netshoot() {
 
 jw() {
   jwt decode --date=local $1
+}
+
+kdenlive() {
+  cd ~/Documents
+  ./kdenlive.AppImage
+}
+
+rme() {
+  wine /home/chain/Documents/rme/Editor_x64.exe
+}
+
+cputemp() {
+  paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp) | column -s $'\t' -t | sed 's/\(.\)..$/.\1°C/'
+  nvidia-smi
 }
