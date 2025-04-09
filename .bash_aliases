@@ -1,13 +1,16 @@
+vim_dev_folder=$HOME/dev/vim
+nvim_config_folder=$HOME/.config/nvim
 save-conf() {
-  cp -R $HOME/.config/nvim/lua/* $HOME/dev/vim/lua
-  cp $HOME/.bash_aliases $HOME/dev/vim
+  mkdir -p $vim_dev_folder/lua
+  cp -R $nvim_config_folder/lua/* $vim_dev_folder/lua
+  cp $HOME/.bash_aliases $vim_dev_folder
   cp ~/.tmux.conf ~/dev/vim
 }
 
 load-conf() {
-  mkdir -p $HOME/.config/nvim/lua
-  cp -R $HOME/dev/vim/lua/* $HOME/.config/nvim/lua/
-  cp $HOME/dev/vim/.tmux.conf $HOME/.tmux.conf
+  mkdir -p $nvim_config_folder/lua
+  cp -R $vim_dev_folder/lua/* $nvim_config_folder/lua/
+  cp $vim_dev_folder/.tmux.conf $HOME/.tmux.conf
 }
 
 aconf() {
