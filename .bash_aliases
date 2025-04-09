@@ -1,21 +1,13 @@
 save-conf() {
-  cp ~/.config/lvim/config.lua ~/dev/vim
-  cp -R ~/.config/lvim/lua/* ~/dev/vim/lua
-  cp ~/.bash_aliases ~/dev/vim
+  cp -R $HOME/.config/nvim/lua/* $HOME/dev/vim/lua
+  cp $HOME/.bash_aliases $HOME/dev/vim
   cp ~/.tmux.conf ~/dev/vim
 }
 
 load-conf() {
-  cp $HOME/dev/vim/config.lua ~/.config/lvim/config.lua
-  cp -R $HOME/dev/vim/lua/* $HOME/.config/lvim/lua/
+  mkdir -p $HOME/.config/nvim/lua
+  cp -R $HOME/dev/vim/lua/* $HOME/.config/nvim/lua/
   cp $HOME/dev/vim/.tmux.conf $HOME/.tmux.conf
-}
-
-lvconf() {
-  current_dir=$(pwd)
-  cd $HOME/.config/lvim && lvim config.lua
-  save-conf
-  cd $current_dir
 }
 
 aconf() {
@@ -36,18 +28,6 @@ vim() {
   else
     nvim "$@"
   fi
-}
-
-tfa() {
-  # do not run if AWS_VAULT is not set
-  if [ -z "$AWS_VAULT" ]; then
-    echo "Gin login first"
-    return 1
-  fi
-
-  export MONGODB_ATLAS_PUBLIC_KEY=$(gin param get atlantis production ATLASMONGODB_API_PUBLIC_KEY)
-  export MONGODB_ATLAS_PRIVATE_KEY=$(gin param get atlantis production ATLASMONGODB_API_PRIVATE_KEY)
-  terraform $@
 }
 
 dev() {
