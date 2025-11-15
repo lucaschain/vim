@@ -257,6 +257,17 @@ copy-ssm() {
   echo "Successfully copied parameter from $SOURCE_PARAM to $DEST_PARAM"
 }
 
+copy-ssm-prod() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: copy-ssm-prod <source-parameter>"
+    echo "Example: copy-ssm-prod /app/dev/db/password"
+    return 1
+  fi
+
+  NEW_PARAM=$(echo -n $1 | sed 's/dev/prod/g')
+  copy-ssm $1 $NEW_PARAM
+}
+
 get-ssm() {
   if [ $# -ne 1 ]; then
     echo "Usage: get-ssm <parameter-name>"
