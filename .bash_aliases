@@ -107,31 +107,6 @@ unprotect() {
   mv $filename.gpg $filename
 }
 
-pokedex() {
-  firefox https://bulbapedia.bulbagarden.net/wiki/$1\#Evolution_data
-}
-
-_pokedex_completion() {
-  local cur prev opts
-  COMPREPLY=()
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  prev="${COMP_WORDS[COMP_CWORD - 1]}"
-
-  local pokedex_file="$HOME/Apps/pokedex/pokemon_names.txt"
-
-  if [ -f "$pokedex_file" ]; then
-    mapfile -t pokemon_names <"$pokedex_file"
-
-    COMPREPLY=($(compgen -W "${pokemon_names[*]}" -- "${cur}"))
-  else
-    echo "Pokemon names file not found: $pokedex_file" >&2
-  fi
-
-  return 0
-}
-
-complete -F _pokedex_completion pokedex
-
 b64d() {
   echo $1 | base64 -d
 }
@@ -300,4 +275,112 @@ senv() {
 
   vpnon $NEWENV
   kx $NEWENV-mesmer
+}
+
+## update security group with IP address
+# Usage: let-me-in <security-group-name>
+let-me-in() {
+  local sg_name="$1"
+
+  if [ -z "$sg_name" ]; then
+    echo "Usage: let-me-in <security-group-name>" >&2
+    return 1
+  fi
+
+  # Get current public IP
+  local ip
+  ip=$(curl -s https://ipconfig.io/ip)
+  if [ -z "$ip" ]; then
+    echo "Failed to get IP from ipconfig.io" >&2
+    return 1
+  fi
+  local new_cidr="${ip}/32"
+
+  # Find SG by name using filters (works across VPCs, not just default)
+  local sg_json
+  if ! sg_json=$(aws ec2 describe-security-groups \
+    --filters "Name=group-name,Values=${sg_name}" \
+    --output json 2>/dev/null); then
+    echo "Failed to describe security groups for name '${sg_name}'" >&2
+    return 1
+  fi
+
+  local group_count
+  group_count=$(echo "$sg_json" | jq '.SecurityGroups | length')
+
+  if [ "$group_count" -eq 0 ]; then
+    echo "No security group found with name '${sg_name}'" >&2
+    return 1
+  fi
+
+  if [ "$group_count" -gt 1 ]; then
+    echo "Warning: multiple security groups found with name '${sg_name}', using the first one." >&2
+  fi
+
+  # Extract group-id (first match)
+  local group_id
+  group_id=$(echo "$sg_json" | jq -r '.SecurityGroups[0].GroupId // empty')
+  if [ -z "$group_id" ] || [ "$group_id" = "null" ]; then
+    echo "Could not determine security group ID for '${sg_name}'" >&2
+    return 1
+  fi
+
+  # Find the first IPv4 rule with description == "lchain-pc"
+  local match
+  match=$(echo "$sg_json" | jq -c '
+    .SecurityGroups[0].IpPermissions[]? as $p
+    | $p.IpRanges[]?
+    | select(.Description == "lchain-pc")
+    | {
+        IpProtocol: $p.IpProtocol,
+        FromPort: $p.FromPort,
+        ToPort: $p.ToPort,
+        CidrIp: .CidrIp
+      }
+  ' | head -n1)
+
+  if [ -z "$match" ]; then
+    echo "No rule with description 'lchain-pc' found in security group '${sg_name}'."
+    echo "Creating a new rule: tcp/22 from ${new_cidr} with description 'lchain-pc'."
+
+    if ! aws ec2 authorize-security-group-ingress \
+      --group-id "$group_id" \
+      --ip-permissions "IpProtocol=tcp,FromPort=22,ToPort=22,IpRanges=[{CidrIp=${new_cidr},Description=lchain-pc}]"; then
+      echo "Failed to create new rule." >&2
+      return 1
+    fi
+
+    echo "New rule created successfully."
+    return 0
+  fi
+
+  local proto from_port to_port old_cidr
+  proto=$(echo "$match" | jq -r '.IpProtocol')
+  from_port=$(echo "$match" | jq -r '.FromPort')
+  to_port=$(echo "$match" | jq -r '.ToPort')
+  old_cidr=$(echo "$match" | jq -r '.CidrIp')
+
+  echo "Updating SG '${sg_name}' (${group_id}) rule 'lchain-pc'"
+  echo "  Protocol : $proto"
+  echo "  Ports    : $from_port-$to_port"
+  echo "  Old CIDR : $old_cidr"
+  echo "  New CIDR : $new_cidr"
+
+  # Revoke old rule
+  if ! aws ec2 revoke-security-group-ingress \
+    --group-id "$group_id" \
+    --ip-permissions "IpProtocol=${proto},FromPort=${from_port},ToPort=${to_port},IpRanges=[{CidrIp=${old_cidr},Description=lchain-pc}]"; then
+    echo "Failed to revoke old rule (${old_cidr})" >&2
+    return 1
+  fi
+
+  # Authorize new rule
+  if ! aws ec2 authorize-security-group-ingress \
+    --group-id "$group_id" \
+    --ip-permissions "IpProtocol=${proto},FromPort=${from_port},ToPort=${to_port},IpRanges=[{CidrIp=${new_cidr},Description=lchain-pc}]"; then
+    echo "Failed to authorize new rule (${new_cidr})" >&2
+    return 1
+  fi
+
+  echo "Security group rule updated successfully."
 }
