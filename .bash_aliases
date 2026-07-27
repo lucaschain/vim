@@ -27,7 +27,7 @@ rconf() {
 
 vim() {
   if [ -f "pyproject.toml" ]; then
-    poetry run nvim "$@"
+    uv run nvim "$@"
   else
     nvim "$@"
   fi
@@ -56,11 +56,11 @@ _dev_completion() {
 complete -F _dev_completion dev
 
 kx() {
-  kubectl ctx $@
+  kubectx $@
 }
 
 kn() {
-  kubectl ns $@
+  kubens $@
 }
 
 drain() {
@@ -161,9 +161,8 @@ awslogin() {
 }
 
 vpnoff() {
-  local env=$1
-  openvpn3 session-manage -D --config /home/chain/.vpn/chain-dev.ovpn || true
-  openvpn3 session-manage -D --config /home/chain/.vpn/chain-staging.ovpn || true
+  [ -f /tmp/vpn.pid ] && sudo kill $(cat /tmp/vpn.pid) 2>/dev/null && rm /tmp/vpn.pid
+  sudo killall openvpn 2>/dev/null || true
 }
 
 vpnon() {
@@ -171,9 +170,9 @@ vpnon() {
     echo "Usage: vpnon <environment>"
     return 1
   fi
-  local env=$1
   vpnoff
-  openvpn3 session-start --config /home/chain/.vpn/chain-$1.ovpn
+  sudo openvpn --config /home/chain/.vpn/chain-$1.ovpn --daemon
+  echo $! >/tmp/vpn.pid
 }
 
 set-ssm() {
@@ -274,7 +273,7 @@ senv() {
   NEWENV="$1"
 
   vpnon $NEWENV
-  kx $NEWENV-mesmer
+  kx $NEWENV
 }
 
 ## update security group with IP address
@@ -383,4 +382,18 @@ let-me-in() {
   fi
 
   echo "Security group rule updated successfully."
+}
+
+kesh() {
+  if [ -z "$1" ]; then
+    echo "Usage: kesh <pod_name> [command]" >&2
+    return 1
+  fi
+  local pod="$1"
+  shift
+  if [ $# -eq 0 ]; then
+    kubectl exec -it "$pod" -- sh
+  else
+    kubectl exec -it "$pod" -- "$@"
+  fi
 }
