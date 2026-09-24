@@ -1,15 +1,12 @@
 vim_dev_folder=$HOME/dev/vim
 nvim_config_folder=$HOME/.config/nvim
 save-conf() {
-  mkdir -p $vim_dev_folder/lua
-  cp -R $nvim_config_folder/lua/* $vim_dev_folder/lua
+  # Neovim edits are already in the repo via ~/.config/nvim's symlink.
   cp $HOME/.bash_aliases $vim_dev_folder
   cp ~/.tmux.conf ~/dev/vim
 }
 
 load-conf() {
-  mkdir -p $nvim_config_folder/lua
-  cp -R $vim_dev_folder/lua/* $nvim_config_folder/lua/
   cp $vim_dev_folder/.tmux.conf $HOME/.tmux.conf
 }
 
@@ -40,6 +37,10 @@ vim() {
 
 dev() {
   cd "$HOME/dev/$@"
+}
+
+wdev() {
+  cd "/mnt/c/Users/chaindows/dev/$@"
 }
 _dev_completion() {
   local cur=${COMP_WORDS[COMP_CWORD]}
@@ -397,3 +398,5 @@ kesh() {
     kubectl exec -it "$pod" -- "$@"
   fi
 }
+
+source ~/.bash_aliases_custom

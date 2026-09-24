@@ -6,6 +6,9 @@ return {
       local strudel = require("strudel")
       strudel.setup({
         update_on_save = true,
+        puppeteer = {
+          args = { "--no-sandbox", "--disable-setuid-sandbox" },
+        },
       })
 
       vim.keymap.set("n", "<leader>sl", strudel.launch, { desc = "Launch Strudel" })
