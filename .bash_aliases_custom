@@ -1,0 +1,76 @@
+maws() {
+  local profile=mesmer-engineer
+  local credentials status
+  local force_device=0
+  local -a login_args=(sso login --profile "$profile" --no-cli-pager --no-cli-auto-prompt)
+
+  while (( $# )); do
+    case "$1" in
+      --device) force_device=1 ;;
+      -h|--help)
+        printf '%s\n' \
+          'Usage: maws [--device]' \
+          'Reuse cached AWS credentials; otherwise log in to mesmer-engineer.' \
+          'SSH sessions use a verification link you can open on your phone.' \
+          '--device forces a fresh device-code login, even outside SSH.'
+        return 0
+        ;;
+      *) printf 'maws: unknown option: %s\n' "$1" >&2; return 2 ;;
+    esac
+    shift
+  done
+
+  if (( ! force_device )) && credentials=$(aws configure export-credentials \
+    --profile "$profile" --format env --no-cli-pager --no-cli-auto-prompt 2>/dev/null) && [[ -n $credentials ]]; then
+    eval "$credentials" || return
+    printf 'AWS credentials loaded from the cached session (%s).\n' "$profile"
+    return 0
+  fi
+
+  if (( force_device )) || [[ -n ${SSH_CONNECTION:-}${SSH_TTY:-}${SSH_CLIENT:-} ]]; then
+    printf '%s\n' 'Open the AWS verification link below in your phone or another browser.'
+    aws "${login_args[@]}" --use-device-code --no-browser || { status=$?; return "$status"; }
+  elif command -v wslview >/dev/null 2>&1; then
+    BROWSER=wslview aws "${login_args[@]}" || { status=$?; return "$status"; }
+  else
+    aws "${login_args[@]}" || { status=$?; return "$status"; }
+  fi
+
+  credentials=$(aws configure export-credentials \
+    --profile "$profile" --format env --no-cli-pager --no-cli-auto-prompt) || { status=$?; return "$status"; }
+  if [[ -z $credentials ]]; then
+    printf '%s\n' 'maws: AWS returned no credentials after login.' >&2
+    return 1
+  fi
+  eval "$credentials" || return
+  printf 'AWS credentials loaded (%s).\n' "$profile"
+}
+
+faws() {
+  local url=https://541637583536.signin.aws.amazon.com/console arn
+  local -a cli=(env -u AWS_ACCESS_KEY_ID -u AWS_SECRET_ACCESS_KEY
+    -u AWS_SESSION_TOKEN -u AWS_SECURITY_TOKEN aws --profile facio --region us-east-1 --no-cli-pager)
+  case "${1:-}" in
+    console)
+      "$HOME/.local/bin/faws-work-browser" "$url"
+      return ;;
+    -h|--help) printf '%s\n' 'faws [--login]  Select Facio; --login repeats browser authorization.' 'faws console    Open the Facio console.'; return ;;
+    ''|--login) ;;
+    *) printf 'Usage: faws [--login|console]\n' >&2; return 2 ;;
+  esac
+  if [[ ${1:-} == --login ]] || ! arn=$("${cli[@]}" sts get-caller-identity --query Arn --output text 2>/dev/null); then
+    if [[ -n ${SSH_CONNECTION:-}${SSH_TTY:-} ]]; then
+      "${cli[@]}" login --remote || return
+    else
+      BROWSER="$HOME/.local/bin/faws-work-browser" "${cli[@]}" login || return
+    fi
+    arn=$("${cli[@]}" sts get-caller-identity --query Arn --output text) || return
+  fi
+  case "$arn" in
+    arn:aws:iam::541637583536:user/chain.mesmer|arn:aws:iam::541637583536:user/*/chain.mesmer) ;;
+    *) printf 'Unexpected Facio identity: %s. Shell not switched. Retry with faws --login.\n' "$arn" >&2; return 1 ;;
+  esac
+  unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_SECURITY_TOKEN
+  export AWS_PROFILE=facio AWS_REGION=us-east-1 AWS_DEFAULT_REGION=us-east-1
+  printf 'AWS CLI now uses %s (%s).\n' "$AWS_PROFILE" "$arn"
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+import os
+import sys
+from urllib.parse import quote
+
+url = sys.argv[1]
+if not url.startswith("https://"):
+    sys.exit("Expected an HTTPS URL")
+browser = "/mnt/c/Program Files/Waterfox/waterfox.exe"
+os.execl(browser, browser, "-new-tab", "ext+container:name=Work&url=" + quote(url, safe=""))

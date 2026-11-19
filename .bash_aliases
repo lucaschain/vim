@@ -2,7 +2,6 @@ vim_dev_folder=$HOME/dev/vim
 nvim_config_folder=$HOME/.config/nvim
 save-conf() {
   # Neovim edits are already in the repo via ~/.config/nvim's symlink.
-  cp $HOME/.bash_aliases $vim_dev_folder
   cp ~/.tmux.conf ~/dev/vim
 }
 
