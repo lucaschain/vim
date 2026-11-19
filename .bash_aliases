@@ -1,29 +1,17 @@
-vim_dev_folder=$HOME/dev/vim
-nvim_config_folder=$HOME/.config/nvim
-save-conf() {
-  # Neovim edits are already in the repo via ~/.config/nvim's symlink.
-  cp ~/.tmux.conf ~/dev/vim
-}
-
-load-conf() {
-  cp $vim_dev_folder/.tmux.conf $HOME/.tmux.conf
-}
-
 aconf() {
-  nvim $HOME/.bash_aliases
-  source $HOME/.bash_aliases
-  save-conf
+  nvim "$HOME/.bash_aliases" "$HOME/.bash_aliases_custom" &&
+    bash -n "$HOME/.bash_aliases" && bash -n "$HOME/.bash_aliases_custom" &&
+    source "$HOME/.bash_aliases"
 }
 
 rconf() {
-  nvim $HOME/.bashrc
-  source $HOME/.bashrc
-  save-conf
+  nvim "$HOME/.bashrc" && bash -n "$HOME/.bashrc" &&
+    printf '%s\n' 'Open a new shell to load .bashrc.'
 }
 
 vim() {
   if [ -f "pyproject.toml" ]; then
-    uv run nvim "$@"
+    poetry run nvim "$@"
   else
     nvim "$@"
   fi

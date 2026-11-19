@@ -14,8 +14,27 @@ ln -s "$HOME/dev/vim" "$HOME/.config/nvim"
 ```
 
 Edits under `~/.config/nvim` and `~/dev/vim` now affect the same files.
-No Lua copying is needed; `save-conf` and `load-conf` only copy the other
-shell/tmux configuration files. Restart Neovim after changing its config.
+Restart Neovim after changing its config.
+
+## Bash and tmux setup
+
+On a new machine, compare and back up existing files first. With the
+destinations clear, link the tracked files directly:
+
+```bash
+mkdir -p "$HOME/.local/bin"
+for file in .bash_aliases .bash_aliases_custom .tmux.conf; do
+  ln -s "$HOME/dev/vim/$file" "$HOME/$file"
+done
+ln -s "$HOME/dev/vim/bin/faws-work-browser" "$HOME/.local/bin/faws-work-browser"
+```
+
+The machine-local `~/.bashrc` sources `~/.bash_aliases`, which sources
+`~/.bash_aliases_custom`. `aconf` opens both alias files (`:next` switches
+to the second), checks their syntax, and reloads them. `rconf` edits and
+checks `~/.bashrc`; open a new shell to apply startup changes without
+rerunning PATH setup or tmux startup in the current shell. For an existing
+tmux server, apply edits with `tmux source-file ~/.tmux.conf`.
 
 ## Requirements
 
@@ -32,5 +51,5 @@ shell/tmux configuration files. Restart Neovim after changing its config.
 ## .bashrc
 
 ```bash
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 ```
