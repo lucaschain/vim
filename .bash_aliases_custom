@@ -74,3 +74,5 @@ faws() {
   export AWS_PROFILE=facio AWS_REGION=us-east-1 AWS_DEFAULT_REGION=us-east-1
   printf 'AWS CLI now uses %s (%s).\n' "$AWS_PROFILE" "$arn"
 }
+alias oc=opencode
+alias oc-clean="OPENCODE_CLI_CONFIG_CONTENT='{\"tabs\":{\"mode\":\"off\"},\"session\":{\"sidebar\":\"hide\"}}' opencode"
